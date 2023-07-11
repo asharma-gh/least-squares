@@ -57,6 +57,29 @@ def basic_proj():
     plt.plot([0, nvec[0][0]], [0, nvec[1][0]], "go-")
     plt.show()
 
+def vec_dist(pp):
+    # Line
+    aa = np.array([10, 5]).reshape(2,1) # Pt on line
+    nn = np.array([2, 1]).reshape(2,1) # Slope of line, unit vector 
+    nn = np.divide(nn, np.linalg.norm(nn))
+
+    # Calculate distance to point p
+    distpp_aa = pp - aa #vector from P -> A
+    pproj_k = (distpp_aa.T.dot(nn)) # project dist vec to n scalar
+    pproj = aa + (pproj_k * nn) # Calculate point on line with this scale param
+    pproj_dv = pp - pproj
+    pproj_dist = np.linalg.norm(pproj_dv)
+    print("Dot test: ", pproj_dv.T.dot(nn))
+    print(pproj, pp)
+    # Show result
+    # test pt
+    tpt = aa + (-15 * nn)
+    plt.plot([aa[0][0], tpt[0][0]], [aa[1][0], tpt[1][0]], "bo-") # point aa
+    plt.plot(pp[0], pp[1], "r+") # point pp
+    plt.plot(pproj[0], pproj[1], "g+") # projected point
+    plt.text(0, 0, "Distance: {}".format(pproj_dist))
+    plt.show()
+
 def _y(m, x, b):
     return m*x + b
 
@@ -73,7 +96,8 @@ m, b = l_sq_1_deg(X, Y)
 #plt.plot(X, Y, "bo")
 Y_p = (X * m) + b
 #plt.plot(X, Y_p, "r")
-perp = compute_perp_dist(X[:5], Y[:5], m[0], b)
-basic_proj()
+#perp = compute_perp_dist(X[:5], Y[:5], m[0], b)
+#basic_proj()
 #plot_resids(perp, X, Y)
 #plt.show()
+vec_dist(np.array([8,5]).reshape(2,1))
