@@ -14,8 +14,6 @@ def dist_k(x,y):
 def compute_perp_dist(X,Y, m, b):
     # compute and show perpendicular distance for each point to
     # best fit line (m, b)
-    X = X
-    Y = Y
     Yoff = b
     n = X.shape[0]
     mx = np.max(X) * 1.25
@@ -27,13 +25,16 @@ def compute_perp_dist(X,Y, m, b):
     pt = np.array([[40], [80]]).reshape(2,1)
     costheta_v = np.divide(tvec.dot(Lvec), distxy * np.linalg.norm(Lvec))
     costheta = np.divide(pt.T.dot(Lvec), (np.linalg.norm(pt) * np.linalg.norm(Lvec)))
-    proj_v = distxy * costheta * np.array([Lu]).reshape(1,1,2) + np.array([0, Yoff[0]]).reshape(1,1,2)
+    proj_v = distxy * costheta_v * np.array([Lu]).reshape(1,1,2) + np.array([0, Yoff[0]]).reshape(1,1,2)
+    print(proj_v)
     print("Lu ", Lu)
+    for p in proj_v[0]:
+        p = p - np.array([0, Yoff[0]]).reshape(1,1,2)
+        print(p / np.linalg.norm(p))
     projpt = np.linalg.norm(pt) * costheta * Lu
     projpt += np.array([0, Yoff[0]]).reshape((2,1))
     plt.plot([pt[0], projpt[0]], [pt[1], projpt[1]], "g+-")
 
-    print("Proj ", projpt, projpt / np.linalg.norm(projpt))
     return proj_v
 
 
@@ -56,9 +57,9 @@ def gen_linear(m, b, err=5):
 
 X, Y = gen_linear(1, 0, 50)
 m, b = l_sq_1_deg(X, Y)
-#plt.plot(X, Y, "bo")
+plt.plot(X, Y, "bo")
 Y_p = (X * m) + b
 plt.plot(X, Y_p, "r")
-perp = compute_perp_dist(X, Y, m[0], b)
+perp = compute_perp_dist(X[:5], Y[:5], m[0], b)
 plot_resids(perp, X, Y)
 plt.show()
