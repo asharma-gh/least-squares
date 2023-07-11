@@ -57,19 +57,21 @@ def gen_d2(a, b, c=1, gmin=0, gmax=10, step=1, err=500):
     Y = np.array([a*(x**2)+b*x+c + random.gauss(-1*err,err) for x in X])
     return X,Y
 
-## Degree 1
-#X, Y = gen_linear(1, 25)
-#m, b = l_sq_1_deg(X, Y)
-#plt.plot(X, Y, "bo")
-#Y_p = (X * m) + b
-#plt.plot(X, Y_p, "r")
+def main():
+    ## Degree 1
+    #X, Y = gen_linear(1, 25)
+    #m, b = l_sq_1_deg(X, Y)
+    #plt.plot(X, Y, "bo")
+    #Y_p = (X * m) + b
+    #plt.plot(X, Y_p, "r")
 
-# Degree 2
-X, Y = gen_d2(1, 2, 1)
-a, b, c = l_sq_2_deg(X,Y)
-Y_p = a*(X**2) + b*X + c
+    # Degree 2
+    X, Y = gen_d2(1, 2, 1)
+    a, b, c = l_sq_2_deg(X,Y)
+    Y_p = a*(X**2) + b*X + c
 
-plt.plot(X, Y, "bo")
-plt.plot(X, Y_p, "r")
-plt.show()
+    plt.plot(X, Y, "bo")
+    plt.plot(X, Y_p, "r")
+    plt.show()
 
+#main()
