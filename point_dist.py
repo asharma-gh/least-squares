@@ -80,6 +80,17 @@ def vec_dist(pp):
     plt.text(0, 0, "Distance: {}".format(pproj_dist))
     plt.show()
 
+def tr_test(pp):
+    plt.plot(pp[0], pp[1], "r+") # point pp
+    for ii in range(91):
+        rad = (ii / 180) * np.pi
+        cc = pp[1]*np.cos(rad) # ycostheta
+        ss = pp[0]*np.sin(rad) # xsintheta
+        yrot = pp[0] * ss - pp[1]*cc
+        plt.plot()
+        plt.plot([pp[0]], [yrot], "go")
+    plt.show()
+
 def _y(m, x, b):
     return m*x + b
 
@@ -100,4 +111,5 @@ Y_p = (X * m) + b
 #basic_proj()
 #plot_resids(perp, X, Y)
 #plt.show()
-vec_dist(np.array([8,5]).reshape(2,1))
+#vec_dist(np.array([4,5]).reshape(2,1))
+tr_test(np.array([4,5]).reshape(2,1))
