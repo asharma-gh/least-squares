@@ -24,6 +24,7 @@ def compute_perp_dist(X,Y, m, b):
     distxy = dist(X, Y).reshape(n, 1) # Composited vector containing magnitude xi,yi
     pt = np.array([[40], [80]]).reshape(2,1)
     costheta_v = np.divide(tvec.dot(Lvec), distxy * np.linalg.norm(Lvec))
+    #ptest2 = np.divide(tvec.dot(Lvec), Lvec.T.dot(Lvec)) * np.array([Lu]).reshape(1,1,2)
     costheta = np.divide(pt.T.dot(Lvec), (np.linalg.norm(pt) * np.linalg.norm(Lvec)))
     proj_v = distxy * costheta_v * np.array([Lu]).reshape(1,1,2) + np.array([0, Yoff[0]]).reshape(1,1,2)
     print(proj_v)
@@ -33,7 +34,7 @@ def compute_perp_dist(X,Y, m, b):
         print(p / np.linalg.norm(p))
     projpt = np.linalg.norm(pt) * costheta * Lu
     projpt += np.array([0, Yoff[0]]).reshape((2,1))
-    plt.plot([pt[0], projpt[0]], [pt[1], projpt[1]], "g+-")
+    #plt.plot([pt[0], projpt[0]], [pt[1], projpt[1]], "g+-")
 
     return proj_v
 
@@ -44,7 +45,17 @@ def plot_resids(perps, X, Y):
        plt.plot([X[ii], p[0]], [Y[ii], p[1]], "go-")
     pass
 
+def basic_proj():
+    X1 = np.array([10, 10]).reshape(2,1)
+    X2 = np.array([7, -16]).reshape(2, 1)
 
+    nvec = np.divide(X2.T.dot(X1), np.linalg.norm(X1)) * (np.divide(X1, np.linalg.norm(X1)))
+    print(np.linalg.norm(X1))
+    print(np.linalg.norm(nvec))
+    plt.plot([0, X2[0][0]], [0, X2[1][0]], "bo-")
+    plt.plot([0, 10], [0, 10], "bo-")
+    plt.plot([0, nvec[0][0]], [0, nvec[1][0]], "go-")
+    plt.show()
 
 def _y(m, x, b):
     return m*x + b
@@ -55,11 +66,14 @@ def gen_linear(m, b, err=5):
     Y = np.array([_y(m, x, b) + random.gauss(-1*err,err) for x in X])
     return X,Y
 
+#plt.xlim(-100, 120)
+#plt.ylim(-100, 120)
 X, Y = gen_linear(1, 0, 50)
 m, b = l_sq_1_deg(X, Y)
-plt.plot(X, Y, "bo")
+#plt.plot(X, Y, "bo")
 Y_p = (X * m) + b
-plt.plot(X, Y_p, "r")
+#plt.plot(X, Y_p, "r")
 perp = compute_perp_dist(X[:5], Y[:5], m[0], b)
-plot_resids(perp, X, Y)
-plt.show()
+basic_proj()
+#plot_resids(perp, X, Y)
+#plt.show()
